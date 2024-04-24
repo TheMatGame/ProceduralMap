@@ -2,7 +2,7 @@
 
 Procedural map creation with C++ and SFML, using Perlin noise in an isometric view. For the moment, I have implemented the isometric view and a wave-like movement function as shown below. Currently, I'm working on the chunks system and later on loading and sharing chunks to optimize the program's efficiency.
 
-![Wave movement](https://github.com/TheMatGame/ProceduralMap/assets/167245576/3336feff-f3d8-4a04-b30a-7f24c735a9c0)
+![Wave movement](https://github.com/TheMatGame/ProceduralMap/assets/167245576/4f164352-be03-43c3-9a2e-2148cd7c856a)
 
 > **The implementation of the Perlin noise is not mine; I took it from the following video, which has a great explanation:**
 > [Perlin Noise Video](https://www.youtube.com/watch?v=kCIaHqb60Cw)
@@ -20,6 +20,3 @@ If you're trying to make something similar, it may be helpful to watch these vid
 - **Chunks system:** [Chunks System Video](https://www.youtube.com/watch?v=bBQdE0gDi0k)
 
 I will be leaving everything I found that is helpful.
-
-
-
