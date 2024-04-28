@@ -10,6 +10,7 @@ public:
 	sf::FloatRect fr;
 
 	std::pair<int, int> origin;
+	std::pair<int, int> diagonal;
 
 	void printChunk(float offsetX, float offsetY, sf::RenderWindow* window);
 	void printChunkWave(float offsetX, float offsetY, float time, sf::RenderWindow* window);
@@ -18,6 +19,6 @@ public:
 	void setColor(sf::Color color);
 
 private:
-	std::pair<int, int> toIso(float x, float y, float width, float height);
+	std::pair<float, float> toIso(float x, float y, float width, float height);
 	std::pair<float, float> toCart(float x, float y, float width, float height);
 };

@@ -13,7 +13,7 @@ Chunk::Chunk(int x, int y) {
 	origin = { x,y };
 }
 
-std::pair<int, int> Chunk::toIso(float x, float y, float width, float height) {
+std::pair<float, float> Chunk::toIso(float x, float y, float width, float height) {
 	return { -(x * 0.5 * width + y * -0.5 * width),(x * 0.25 * height + y * 0.25 * height) };
 }
 
@@ -25,21 +25,21 @@ std::pair<float, float> Chunk::toCart(float x, float y, float width, float heigh
 }
 
 void Chunk::printChunk(float offsetX, float offsetY, sf::RenderWindow* window) {
-	for (int i = 1; i <= 5; ++i) {
-		for (int j = 1; j <= 5; ++j) {
-			std::pair<int, int> p = toIso(origin.first+i, origin.second+j, fr.width, fr.height);
-			block.setPosition(p.first + offsetX, p.second + offsetY);
+	for (int i = 0; i < 5; ++i) {
+		for (int j = 0; j < 5; ++j) {
+			std::pair<float, float> p = toIso(origin.first+i, origin.second+j, fr.width, fr.height);
+			block.setPosition((-75 / 2.0) + p.first + offsetX, p.second + offsetY);
 			window->draw(block);
 		}
 	}
 }
 
 void Chunk::printChunkWave(float offsetX, float offsetY, float time, sf::RenderWindow* window) {
-	for (int i = 1; i <= 5; ++i) {
-		for (int j = 1; j <= 5; ++j) {
-			std::pair<int, int> p = toIso(i, j, fr.width, fr.height);
+	for (int i = 0; i < 5; ++i) {
+		for (int j = 0; j < 5; ++j) {
+			std::pair<float, float> p = toIso(origin.first + i, origin.second + j, fr.width, fr.height);
 			float waveMovement = 20 * sin(0.001 * time + i + origin.first) + 20 * sin(0.001 * time + j + origin.second);
-			block.setPosition(p.first + offsetX, p.second + offsetY + waveMovement);
+			block.setPosition((-75 / 2.0) + p.first + offsetX, p.second + offsetY + waveMovement);
 			window->draw(block);
 		}
 	}
