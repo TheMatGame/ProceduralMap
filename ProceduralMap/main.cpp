@@ -6,16 +6,31 @@
 #include "Chunk.hpp"
 
 #define Step 10
-#define MapSize 2
+#define MapSize 30
 
 const int windowWidth = 1920 / 2;
 const int windowHeight = 1080 / 2;
 
 std::pair<int, int> playerPos = { 0,0 };
 
-
+// La posicion inicial del objeto y el tamaño que este ocupa (sirve para calcular la separacion)
 std::pair<int, int> toIso(float x, float y, float width, float height) {
     return {-(x*0.5*width+y*-0.5*width),(x*0.25*height+y*0.25*height)};
+}
+
+std::pair<int, int> toCart(float x, float y, float w, float h) {
+    float det = 0.5 * w * 0.25 * h - (-0.5 * w * 0.25 * h);
+    float invDet = 1.f / det;
+
+    // Inversa de la matriz
+    float a = 0.25 * h * invDet;
+    float b = 0.5 * w * invDet;
+    float c = -0.25 * h * invDet;
+    float d = 0.5 * w * invDet;
+
+    float newX = c * x + d * y;
+    float newY = a * x + b * y;
+    return { newX, newY };
 }
 
 std::pair<float, float> cartToScreen(float cartX, float cartY, float screenWidth, float screenHeight, float zoomFactor, float offsetX, float offsetY) {
@@ -24,11 +39,18 @@ std::pair<float, float> cartToScreen(float cartX, float cartY, float screenWidth
     return { screenX,screenY };
 }
 
-bool insideOf(/*int x, int y,*/ Chunk* chunk) {
+bool insideOf(Chunk* chunk, float offsetX, float offsetY) {
     int ox = chunk->origin.first;
     int oy = chunk->origin.second;
     int width = chunk->fr.width;
     int height = chunk->fr.height;
+
+    std::pair<int, int> isoPlayerPos = { playerPos.first / width, playerPos.second / height };
+    isoPlayerPos = toIso(isoPlayerPos.first, isoPlayerPos.second, width, height);
+    //isoPlayerPos = { (-75 / 2.0) + isoPlayerPos.first + offsetX, isoPlayerPos.second + offsetY };
+    
+    std::cout << isoPlayerPos.first << " " << isoPlayerPos.second << std::endl;
+    /*
     //Window coordinates
     //std::pair<float, float> offsetPlayer = cartToScreen(0, 0, windowWidth, windowHeight, 1, -playerPos.first, -playerPos.second);
     std::pair<float, float> offsetChunk = cartToScreen(ox, oy, windowWidth, windowHeight, 1, -playerPos.first, -playerPos.second);
@@ -45,7 +67,8 @@ bool insideOf(/*int x, int y,*/ Chunk* chunk) {
 
     float calc = (dx / ancho) + (dy / alto);
 
-    return  0 <= calc && calc <= 0.5;
+    return  0 <= calc && calc <= 0.5;*/
+    return false;
 }
 
 int main()
@@ -60,16 +83,18 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight, 32), "Procedural Terrain");
 
-    //sf::Uint8* pixels = new sf::Uint8[windowWidth * windowHeight];
-    
-    //const int GRID_SIZE = 300;
+    sf::Uint8* pixels = new sf::Uint8[windowWidth * windowHeight * 4];
+    unsigned char* noisemap = new unsigned char[windowWidth * windowHeight];
 
-    /*
+
+    const int GRID_SIZE = 70;
+
+
     for (int x = 0; x < windowWidth; x++)
     {
         for (int y = 0; y < windowHeight; y++)
         {
-            int index = y * windowWidth + x;
+            int index = (y * windowWidth + x) * 4;
 
 
             float val = 0;
@@ -95,17 +120,48 @@ int main()
             else if (val < -1.0f)
                 val = -1.0f;
 
+            int r, g, b, h = (val + 1.f) / 0.1;
+            noisemap[y * windowWidth + x] = h;
+            if (h < 6) { r = 0, g = 0, b = 255; noisemap[y * windowWidth + x] = 5; }    // water
+            else if (h < 9) { r = 237, g = 241, b = 110;  }                             // sand
+            else if (h < 12) { r = 0, g = 255, b = 0; }                                 // grass
+            else if (h < 15) { r = 145, g = 72, b = 0; }                                // dirt
+            else if (h < 17) { r = 100, g = 100, b = 100; }                             // rocks
+            else if (h < 19) { r = 200, g = 200, b = 200; }                             // mountain rocks
+            else { r = 255, g = 255, b = 255; }                                         // snow
+
             // Convert 1 to -1 into 255 to 0
-            int color = (int)(((val + 1.0f) * 0.5f) * 255);
+            /*int color = (int)(((val + 1.0f) * 0.5f) * 10);
+            noisemap[y * windowWidth + x] = color;*/
 
             // Set pixel color
-            pixels[index] = color;
+            pixels[index] = r;
+            pixels[index + 1] = g;
+            pixels[index + 2] = b;
+            pixels[index + 3] = 255;
         }
     }
-    */
 
+    for (int i = 0; i < 15; i++) {
+        for (int j = 0; j < 15; j++) {
+            int aux = noisemap[i * windowWidth + j];
+            std::cout << aux << " ";
+        }
+        std::cout << std::endl;
+    }
 
-    float zoom = 0.25;
+    sf::Texture texture;
+    sf::Sprite sprite;
+ 
+    texture.create(windowWidth, windowHeight);
+ 
+    texture.update(pixels);
+ 
+    sprite.setTexture(texture);
+    
+    bool showPerlin = false;
+
+    float zoom = 1;
 
     sf::CircleShape point(5);
     point.setOrigin(5, 5);
@@ -118,6 +174,8 @@ int main()
 
     sf::Clock timer;
     timer.restart();
+
+    std::pair<float, float> offset = { 0,0 };
 
     while (window.isOpen())
     {
@@ -136,57 +194,27 @@ int main()
             // Movement WASD -- esta mal -> cambiar los ejes
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
                 playerPos = { playerPos.first,playerPos.second + Step };
-                std::cout << playerPos.first << " " << playerPos.second << std::endl;
-
-                for (int i = 0; i < MapSize; ++i) {
-                    for (int j = 0; j < MapSize; ++j) {
-                        if (insideOf(terrain[i][j])) {
-                            std::cout << "Dentro de " << i << " " << j << std::endl;
-                            terrain[i][j]->setColor(sf::Color::Red);
-                        }
-                        else {
-                            terrain[i][j]->setColor(sf::Color::White);
-                        }
-                    }
-                }
-                
+                //std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //insideOf(terrain[0][0], offset.first, offset.second);
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
                 playerPos = { playerPos.first - Step,playerPos.second };
-                std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //insideOf(terrain[0][0], offset.first, offset.second);
 
-                for (int i = 0; i < MapSize; ++i) {
-                    for (int j = 0; j < MapSize; ++j) {
-                        if (insideOf(terrain[i][j])) {
-                            std::cout << "Dentro de " << i << " " << j << std::endl;
-                            terrain[i][j]->setColor(sf::Color::Red);
-                        }
-                        else {
-                            terrain[i][j]->setColor(sf::Color::White);
-                        }
-                    }
-                }
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
                 playerPos = { playerPos.first,playerPos.second - Step };
-                std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //insideOf(terrain[0][0], offset.first, offset.second);
 
-                for (int i = 0; i < MapSize; ++i) {
-                    for (int j = 0; j < MapSize; ++j) {
-                        if (insideOf(terrain[i][j])) {
-                            std::cout << "Dentro de " << i << " " << j << std::endl;
-                            terrain[i][j]->setColor(sf::Color::Red);
-                        }
-                        else {
-                            terrain[i][j]->setColor(sf::Color::White);
-                        }
-                    }
-                }
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
                 playerPos = { playerPos.first + Step,playerPos.second };
-                std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //std::cout << playerPos.first << " " << playerPos.second << std::endl;
+                //insideOf(terrain[0][0], offset.first, offset.second);
 
+                /*
                 for (int i = 0; i < MapSize; ++i) {
                     for (int j = 0; j < MapSize; ++j) {
                         if (insideOf(terrain[i][j])) {
@@ -198,22 +226,38 @@ int main()
                         }
                     }
                 }
+                */
             }
             // Zoom in - Zoom out
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {}
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {}
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+                showPerlin = true;
+                std::cout << showPerlin << std::endl;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+                showPerlin = false;
+                std::cout << showPerlin << std::endl;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::U)) {
+                zoom += 0.1; 
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
+                zoom -= 0.1;
+            }
         }
 
 
         window.clear();
 
         int TIME = timer.getElapsedTime().asMilliseconds();
-        std::pair<float, float> offset = cartToScreen(0, 0, windowWidth, windowHeight, 1, -playerPos.first, -playerPos.second);
+        offset = cartToScreen(0, 0, windowWidth, windowHeight, 1, -playerPos.first, -playerPos.second);
 
         for (int i = 0; i < MapSize; ++i) {
             for (int j = 0; j < MapSize; ++j) {
+                terrain[i][j]->reScale(zoom);
+
                 //terrain[i][j]->printChunkWave(offset.first, offset.second, TIME, &window);
-                terrain[i][j]->printChunk(offset.first, offset.second, &window);
+                //terrain[i][j]->printChunk(offset.first, offset.second, &window);
+                terrain[i][j]->printChunkNoise(offset.first, offset.second, noisemap, &window);
             }
         }
 
@@ -222,6 +266,10 @@ int main()
         point.setPosition(offset.first, offset.second);
         window.draw(point);
         window.draw(pmove);
+        if (showPerlin) {
+            window.clear();
+            window.draw(sprite);
+        }
         window.display();
     }
 

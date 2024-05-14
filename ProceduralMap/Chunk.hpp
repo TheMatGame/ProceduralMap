@@ -14,9 +14,12 @@ public:
 
 	void printChunk(float offsetX, float offsetY, sf::RenderWindow* window);
 	void printChunkWave(float offsetX, float offsetY, float time, sf::RenderWindow* window);
+	void printChunkNoise(float offsetX, float offsetY, unsigned char* pixels, sf::RenderWindow* window);
 
-	void setScale(float scale);
 	void setColor(sf::Color color);
+	void setColor(float heigh);
+
+	void reScale(float zoom);
 
 private:
 	std::pair<float, float> toIso(float x, float y, float width, float height);

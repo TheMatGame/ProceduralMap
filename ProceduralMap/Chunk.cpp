@@ -29,6 +29,7 @@ void Chunk::printChunk(float offsetX, float offsetY, sf::RenderWindow* window) {
 		for (int j = 0; j < 5; ++j) {
 			std::pair<float, float> p = toIso(origin.first+i, origin.second+j, fr.width, fr.height);
 			block.setPosition((-75 / 2.0) + p.first + offsetX, p.second + offsetY);
+			//std::cout << p.first << " " << p.second << std::endl;
 			window->draw(block);
 		}
 	}
@@ -45,11 +46,45 @@ void Chunk::printChunkWave(float offsetX, float offsetY, float time, sf::RenderW
 	}
 }
 
-void Chunk::setScale(float scale) {
-	block.setScale(scale, scale);
-	fr = block.getGlobalBounds();
+void Chunk::printChunkNoise(float offsetX, float offsetY, unsigned char* pixels, sf::RenderWindow* window) {
+
+	unsigned char chunkDistribution[5][5];
+	for (int i = 0; i < 5; ++i) {
+		for (int j = 0; j < 5; ++j) {
+			chunkDistribution[i][j] = pixels[(origin.first + i) * 960 + origin.second + j];
+		}
+	}
+
+	for (int i = 0; i < 5; ++i) {
+		for (int j = 0; j < 5; ++j) {
+			std::pair<float, float> p = toIso(origin.first + i, origin.second + j, fr.width, fr.height);
+			int height = chunkDistribution[i][j];
+			//for (int k = 0; k <= heigh; ++k) {
+				block.setPosition((-75 / 2.0) + p.first + offsetX, p.second + offsetY - height*(fr.height/2.f));
+				setColor(height);
+				window->draw(block);
+			//}
+			//std::cout << heigh << " ";
+		}
+		//std::cout << std::endl;
+	}
 }
 
 void Chunk::setColor(sf::Color color) {
 	block.setColor(color);
+}
+
+void Chunk::setColor(float heigh) {
+	if (heigh < 6) block.setColor(sf::Color::Blue);
+	else if (heigh < 9) block.setColor(sf::Color(237,241,110));
+	else if (heigh < 12) block.setColor(sf::Color::Green);
+	else if (heigh < 15) block.setColor(sf::Color(145,72,0));
+	else if (heigh < 17) block.setColor(sf::Color(100,100,100));
+	else if (heigh < 19) block.setColor(sf::Color(200,200,200));
+	else block.setColor(sf::Color::White);
+}
+
+void Chunk::reScale(float zoom) {
+	block.setScale(0.25*zoom, 0.25*zoom);
+	fr = block.getGlobalBounds();
 }

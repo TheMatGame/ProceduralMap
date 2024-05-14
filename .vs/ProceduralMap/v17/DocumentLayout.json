@@ -1,0 +1,93 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|solutionrelative:ProceduralMap\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\Chunk.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|solutionrelative:ProceduralMap\\Chunk.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\Chunk.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|solutionrelative:ProceduralMap\\Chunk.hpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\PerlinNoise.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2450346F-630A-4F25-973D-468788F83369}|ProceduralMap\\ProceduralMap.vcxproj|solutionrelative:ProceduralMap\\PerlinNoise.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\main.cpp",
+              "RelativeDocumentMoniker": "ProceduralMap\\main.cpp",
+              "ToolTip": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\main.cpp",
+              "RelativeToolTip": "ProceduralMap\\main.cpp",
+              "ViewState": "AQIAAMcAAAAAAAAAAAAAANYAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-03T23:17:22.781Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d3750d8a-574b-4fb3-b7e2-aa8af40e8231}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PerlinNoise.cpp",
+              "DocumentMoniker": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\PerlinNoise.cpp",
+              "RelativeDocumentMoniker": "ProceduralMap\\PerlinNoise.cpp",
+              "ToolTip": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\PerlinNoise.cpp",
+              "RelativeToolTip": "ProceduralMap\\PerlinNoise.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-10T11:37:12.826Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Chunk.hpp",
+              "DocumentMoniker": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\Chunk.hpp",
+              "RelativeDocumentMoniker": "ProceduralMap\\Chunk.hpp",
+              "ToolTip": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\Chunk.hpp",
+              "RelativeToolTip": "ProceduralMap\\Chunk.hpp",
+              "ViewState": "AQIAAA0AAAAAAAAAAAAAABEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-05-09T15:38:02.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Chunk.cpp",
+              "DocumentMoniker": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\Chunk.cpp",
+              "RelativeDocumentMoniker": "ProceduralMap\\Chunk.cpp",
+              "ToolTip": "C:\\Users\\Marc\\source\\repos\\TheMatGame\\ProceduralMap\\ProceduralMap\\Chunk.cpp",
+              "RelativeToolTip": "ProceduralMap\\Chunk.cpp",
+              "ViewState": "AQIAABgAAAAAAAAAAAAuwB8AAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-05-06T13:57:09.201Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
